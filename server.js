@@ -46,6 +46,32 @@ app.post("/short", async (req, res) => {
   }
 });
 
+app.post("/shortcustom", async (req, res) => {
+  try {
+    var { longurl, custom } = req.body;
+    if (!longurl || !custom) {
+      return res.status(400).json({ error: "url or custom name is required" });
+    }
+    if (!longurl.startsWith("http://") || !longurl.startsWith("https://")) {
+      longurl = "http://" + longurl;
+    }
+
+    const shortCode = custom;
+
+    await pool.query("INSERT INTO urls (short_code, long_url) values ($1,$2)", [
+      shortCode,
+      longurl,
+    ]);
+
+    res.json({
+      shorturl: `http://localhost:${PORT}/${shortCode}`,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send("Server error");
+  }
+});
+
 app.get("/all", async (req, res) => {
   try {
     const result = await pool.query(
