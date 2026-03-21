@@ -16,7 +16,6 @@ function generateShortCode(){
     return Math.random().toString(36).substring(2,8);
 }
 
-
 // route
 app.get('/', (req, res) => {
     res.send('URL Shortener is running');
@@ -40,6 +39,10 @@ app.post('/short',(req,res)=>{
     })
 });
 
+app.get('/all',(req,res)=>{
+    res.json(urlDatabase)
+})
+
 //redirect route
 app.get('/:code',(req,res)=>{
     const {code} = req.params;
@@ -51,6 +54,7 @@ app.get('/:code',(req,res)=>{
         return res.status(404).send('Url not found');
     }
 });
+
 
 // start server
 app.listen(PORT, () => {
