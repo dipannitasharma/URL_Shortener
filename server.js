@@ -2,10 +2,13 @@ require('dotenv').config();
 const express = require("express"); // import express
 const bodyParser = require("body-parser");
 const urlRoutes = require('./routes/urlRoutes');
+const cors = require("cors");
 
 const app = express(); // create app instance
 
 const PORT = 3000; // define port
+
+app.use(cors());
 
 //middleware
 app.use(bodyParser.json());

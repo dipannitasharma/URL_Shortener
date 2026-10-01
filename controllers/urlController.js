@@ -12,11 +12,29 @@ exports.shortenUrl = async (req, res) => {
             return res.status(400).json({ error: 'URL is required' });
         }
 
-        if (!longUrl.startsWith('http://') && !longUrl.startsWith('https://')) {
-            longUrl = 'http://' + longUrl;
+        try {
+            longUrl = new URL(
+                longUrl.startsWith('http://') || longUrl.startsWith('https://')
+                    ? longUrl
+                    : `https://${longUrl}`
+            ).toString();
+        } catch {
+            return res.status(400).json({
+                error: 'Please enter a valid URL.'
+            });
         }
 
         const BASE_URL = process.env.BASE_URL || `http://localhost:3000`;
+
+        if (customCode) {
+        const isValid = /^[a-zA-Z0-9_-]{3,30}$/.test(customCode);
+
+        if (!isValid) {
+            return res.status(400).json({
+                error: "Custom alias must be 3-30 characters and contain only letters, numbers, hyphens, or underscores."
+            });
+        }
+    }
 
         let shortCode = customCode || generateShortCode();
 
