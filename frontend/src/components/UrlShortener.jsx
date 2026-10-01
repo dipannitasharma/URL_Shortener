@@ -1,4 +1,7 @@
 import { useState } from "react";
+import API_URL from "../api";
+
+
 
 function UrlShortener() {
   const [longUrl, setLongUrl] = useState("");
@@ -21,7 +24,7 @@ function UrlShortener() {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:3000/shorten", {
+      const response = await fetch(`${API_URL}/shorten`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

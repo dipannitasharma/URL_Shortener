@@ -1,4 +1,5 @@
 import { useState } from "react";
+import API_URL from "../api";
 
 function Analytics() {
   const [statsCode, setStatsCode] = useState("");
@@ -19,7 +20,7 @@ function Analytics() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/stats/${statsCode}`
+        `${API_URL}/stats/${statsCode}`
       );
 
       const data = await response.json();
